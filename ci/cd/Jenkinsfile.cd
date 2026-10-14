@@ -1,0 +1,20 @@
+// CD test-back → agd-dev. Params: VERSION, ENVIRONMENT.
+// Corre dentro de Jenkins (contenedor) → kubeconfig vía credential file.
+pipeline {
+  agent any
+  stages {
+    stage('deploy') {
+      steps {
+        withCredentials([file(credentialsId: 'kind-kubeconfig', variable: 'KCFG')]) {
+          sh '''
+            set -e
+            export KUBECONFIG="$KCFG"
+            kubectl -n agd-dev set image deployment/test-back \
+              app=ghcr.io/ingeniods/test-back:${VERSION}
+            kubectl -n agd-dev rollout status deployment/test-back --timeout=180s
+          '''
+        }
+      }
+    }
+  }
+}

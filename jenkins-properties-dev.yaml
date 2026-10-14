@@ -1,0 +1,7 @@
+# Resuelve el deploy target de la misión:
+#  - environment/namespace → monitoring env (envType DEV por el sufijo -dev)
+#  - azApplicationName → app a verificar en el rollout
+environment: dev
+namespace: agd-dev
+cd:
+  azApplicationName: test-back
