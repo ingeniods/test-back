@@ -1,7 +1,107 @@
 {
   "project": "test-back",
-  "gates": {
-    "build":  { "cmd": "./mvnw -B -q package", "timeout": 300 },
-    "test":   { "cmd": "./mvnw -B -q test",    "timeout": 300 }
-  }
+  "gates": [
+    {
+      "name": "test",
+      "command": "mvn -q test"
+    }
+  ],
+  "gateHistory": [
+    {
+      "at": "2026-10-15T19:44:45.843Z",
+      "ok": true,
+      "results": [
+        {
+          "name": "test",
+          "ok": true,
+          "exitCode": 0,
+          "durationMs": 5816
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T19:44:47.648Z",
+      "ok": true,
+      "results": [
+        {
+          "name": "test",
+          "ok": true,
+          "exitCode": 0,
+          "durationMs": 1799
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T19:47:03.641Z",
+      "ok": true,
+      "results": [
+        {
+          "name": "test",
+          "ok": true,
+          "exitCode": 0,
+          "durationMs": 1966
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T19:47:05.209Z",
+      "ok": true,
+      "results": [
+        {
+          "name": "test",
+          "ok": true,
+          "exitCode": 0,
+          "durationMs": 1567
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T19:49:19.804Z",
+      "ok": true,
+      "results": [
+        {
+          "name": "test",
+          "ok": true,
+          "exitCode": 0,
+          "durationMs": 1741
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T19:49:21.339Z",
+      "ok": true,
+      "results": [
+        {
+          "name": "test",
+          "ok": true,
+          "exitCode": 0,
+          "durationMs": 1532
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T19:49:32.439Z",
+      "ok": true,
+      "results": [
+        {
+          "name": "test",
+          "ok": true,
+          "exitCode": 0,
+          "durationMs": 1625
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T19:49:33.825Z",
+      "ok": true,
+      "results": [
+        {
+          "name": "test",
+          "ok": true,
+          "exitCode": 0,
+          "durationMs": 1383
+        }
+      ]
+    }
+  ]
 }
