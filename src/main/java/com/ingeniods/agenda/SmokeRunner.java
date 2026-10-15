@@ -21,7 +21,10 @@ public class SmokeRunner {
     ApplicationRunner schemaSmokeCheck(TaskRepository repo) {
         return args -> {
             try {
-                long count = repo.count();
+                // findAll() (no count()): el SELECT incluye TODAS las columnas
+                // mapeadas → si falta alguna en la BD, el driver lanza el
+                // error literal ("column due_date does not exist").
+                long count = repo.findAll().size();
                 log.info("SMOKE CHECK OK — tabla tasks accesible ({} filas)", count);
             } catch (Exception e) {
                 log.error("SMOKE CHECK FAILED — modelo JPA desacoplado de la BD: {}",

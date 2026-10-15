@@ -18,7 +18,18 @@ pipeline {
           currentBuild.displayName = ver
           withCredentials([string(credentialsId: 'ghcr-token', variable: 'GHCR_PAT')]) {
             withEnv(["GHCR_USER=ingeniods", "IMG=ghcr.io/ingeniods/test-back:${ver}"]) {
-              sh './mvnw -B jib:build -Djib.to.image=$IMG'
+              sh '''
+                # el daemon fija la plataforma: aarch64→arm64, x86_64→amd64
+                ARCH=$(docker info -f '{{.Architecture}}' | sed 's/aarch64/arm64/;s/x86_64/amd64/')
+                ./mvnw -B jib:dockerBuild -Djib.to.image="$IMG" -Djib.arch="$ARCH"
+                # carga al nodo kind (equivalente a `kind load`, sin el binario)
+                docker save "$IMG" | docker exec -i agd-control-plane ctr -n k8s.io images import -
+                # push a GHCR solo si hay PAT configurado
+                if [ -n "$GHCR_PAT" ]; then
+                  echo "$GHCR_PAT" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+                  docker push "$IMG"
+                fi
+              '''
             }
           }
         }

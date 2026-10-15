@@ -8,9 +8,13 @@ pipeline {
         withCredentials([file(credentialsId: 'kind-kubeconfig', variable: 'KCFG')]) {
           sh '''
             set -e
+            IMG="ghcr.io/ingeniods/test-back:${VERSION}"
+            # si la imagen está en el daemon local (jib:dockerBuild del CI),
+            # impórtala al nodo kind — no-op si ya está o si viene de GHCR.
+            docker image inspect "$IMG" >/dev/null 2>&1 && \
+              docker save "$IMG" | docker exec -i agd-control-plane ctr -n k8s.io images import - || true
             export KUBECONFIG="$KCFG"
-            kubectl -n agd-dev set image deployment/test-back \
-              app=ghcr.io/ingeniods/test-back:${VERSION}
+            kubectl -n agd-dev set image deployment/test-back app="$IMG"
             kubectl -n agd-dev rollout status deployment/test-back --timeout=180s
           '''
         }
