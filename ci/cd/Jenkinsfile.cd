@@ -15,6 +15,9 @@ pipeline {
               docker save "$IMG" | docker exec -i agd-control-plane ctr -n k8s.io images import - || true
             export KUBECONFIG="$KCFG"
             kubectl -n agd-dev set image deployment/test-back app="$IMG"
+            # redeploy con el mismo tag (SNAPSHOT): set image es no-op —
+            # hay que forzar el restart para que el pod coja la imagen nueva.
+            kubectl -n agd-dev rollout restart deployment/test-back
             kubectl -n agd-dev rollout status deployment/test-back --timeout=180s
           '''
         }
